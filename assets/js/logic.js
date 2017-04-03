@@ -21,7 +21,8 @@ var one;
 var two;
 //DOM variables
 var btnShoot = $("#button-shoot");
-
+var btnPlayer = $(".player-btn");
+var btnSelect = $(".selection-button");
   // sync the game State with firebase
   gameStateRef.on("value", function(snap) {
     $("#one-panel h3").text(snap.val().one.name)
@@ -42,8 +43,8 @@ var btnShoot = $("#button-shoot");
 
   });
 
-//Controls the Player selection Modal, displaying different options depending on the number of users/active players
-database.ref().once("value", function(snap) {
+  //Controls the Player selection Modal, displaying different options depending on the number of users/active players
+  database.ref().once("value", function(snap) {
   var gameState = snap.val().GAME_STATE;
   var activeUsers = Object.keys(snap.val().USERS_ONLINE)
 
@@ -52,7 +53,6 @@ database.ref().once("value", function(snap) {
       activeUsers.indexOf(gameState.two.userKey) === -1) {
        $("#modal").modal('show');
        $("#selection-area").removeClass("hidden");
-       console.log("a")
   }
   //If player one hasn't beed picked
   else if (activeUsers.indexOf(gameState.one.userKey) != -1) {
@@ -60,19 +60,20 @@ database.ref().once("value", function(snap) {
        $(".modal-body div").removeClass("btn-group");
        $(".player-btn[data-player='one']").addClass("hidden");
        $("#modal").modal('show');
-       console.log("b")
+       $("#selection-area").removeClass("hidden")
   }
   //If player two  hasn't beed picked
   else if (activeUsers.indexOf(gameState.two.userKey) != -1) {
        $(".modal-body div").removeClass("btn-group");
        $(".player-btn[data-player='two']").addClass("hidden");
        $("#modal").modal('show');
-       console.log("c")
+       $("#selection-area").removeClass("hidden")
   }
 });
 
+//Click handler functions for DOM elements
   //Click handler for the player selection buttons
-  $(".player-btn").on("click", function(){
+  btnPlayer.on("click", function(){
     if ($("#player-name").val().length > 0) {
       var player = $(this).attr("data-player");
       var name = $("#player-name").val().trim();
@@ -83,9 +84,8 @@ database.ref().once("value", function(snap) {
       $("#modal").modal("hide");
     }
   });
-
   //Click handler which controls the DOM manipulation for the RPS selection buttons
-  $(".selection-button").on("click", function(event) {
+  btnSelect.on("click", function(event) {
 
     var btnValue = $(event.target);
 
@@ -116,7 +116,6 @@ database.ref().once("value", function(snap) {
     }
 
   });
-
   //Click handler for the Shoot button, stores the User's choice in their user Object
   btnShoot.on("click", function() {
     //grab the selected choice (RPS) as a jQuery Object
@@ -127,8 +126,8 @@ database.ref().once("value", function(snap) {
     var player = $(this).attr("data-player")
     //Update the User's selection in fb
     gameStateRef.child(player).update({selection: selection})
-
-    $("#one-content").html("<p>Ready!</p>")
+    console.log(player);
+    $("#" +player + "-content").html("<p>Ready!</p>")
 
     btnSelected.attr("data-selected", "false");
     btnSelected.removeClass("selected");
