@@ -23,32 +23,32 @@ body, #selection-row {
   position: relative;
 }
 
-#player1-panel, #player2-panel {
+#one-panel, #two-panel {
     border-radius: 2px;
     box-shadow: 0px 0px 4px #111;
     transition: 150ms ease-in-out;
     min-height: 200px;
 }
 
-#player1-panel  {
+#one-panel  {
   border-color: #1976D2;
 }
 
-#player2-panel {
+#two-panel {
   border-color: #D32F2F;
 }
 
-#player1-panel .panel-heading, #player2-panel .panel-heading{
+#one-panel .panel-heading, #two-panel .panel-heading{
   background-image: none;
   border-radius: 0px;
   color: #eee;
 }
 
-#player1-panel .panel-heading, #player1-select {
+#one-panel .panel-heading, #one-select {
   background-color: #1976D2;
 }
 
-#player2-panel .panel-heading, #player2-select{
+#two-panel .panel-heading, #two-select{
   background-color: #D32F2F;
 }
 
