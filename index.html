@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ro Sham Bo!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- JQuery Link -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!-- Firebase.js Link -->
+    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+
+    <!-- Bootstrap 3 min CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Bootstrap 3 Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Bootstrap 3 js (modal) -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- main.css stylesheet -->
+    <link rel="stylesheet" href="assets/css/main.css">
+
+
+  </head>
+  <body>
+    <!-- modal for player seclection and rules -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close hidden" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Select</h4>
+          </div>
+          <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="player-name">Name:</label>
+                  <input type="text" class="form-control" id="player-name">
+                </div>
+                <div class="btn-group" role="group" aria-label="...">
+                  <button type="button" class="btn btn-md player-btn" data-player="one" data-chosen="false" id="player1-select">Player 1</button>
+                  <button type="button" class="btn btn-md player-btn" data-player="two" data-chosen="false" id="player2-select">Player 2</button>
+                </div>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+<main>
+  <header>
+    <h1>RoShamBo</h1>
+  </header>
+  <div class="jumbotron well wel-lg">
+    <div class="row">
+
+      <!-- Player 1 panel -->
+      <div class="col-xs-6 col-md-3 col-md-offset-2">
+          <div class="panel panel-default" id="player1-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">Player 1</h3>
+            </div>
+            <div class="panel-body" id="player1-content">
+              Thinking...
+            </div>
+          </div>
+          <p>Wins <span class="badge" id="player1-wins" >x</span></p>
+          <p>Losses <span class="badge" id="player1-wins">0</span></p>
+        </div>
+
+      <!-- utility Div for countdown and results message -->
+      <div class="col-md-2 col-sm-12 col-xs-12" id="vs">
+        <h2>VS</h2>
+      </div>
+
+        <!-- Player 2 panel -->
+      <div class=" col-xs-6 col-md-3">
+          <div class="panel panel-default" id="player2-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">Player 2</h3>
+            </div>
+            <div class="panel-body">
+              Ready!
+            </div>
+          </div>
+            <p>Wins <span class="badge" id="player2-wins">x</span></p>
+            <p>Losses <span class="badge" id="player2-losses">x</span></p>
+        </div>
+    </div> <!-- End Row -->
+  </div> <!-- End jumbotron -->
+  <div class="container">
+    <div class="row" id="selection-row">
+      <div id="selection-area" class="hidden">
+        <a href="#" class="selection-button"><img class="img" src="assets/images/rock.jpeg" alt="Rock" data-selected="false" /></a>
+        <a href="#" class="selection-button"><img class="img" src="assets/images/paper.jpeg" alt="Paper" data-selected="false" /></a>
+        <a href="#" class="selection-button"><img class="img" src="assets/images/scissors.jpeg" alt=" Scissors" data-selected="false"/></a>
+        <button type="button" name="Shoot!" class="btn btn-success disabled" id="button-shoot" data-player="">Shoot</button>
+
+      </div>
+    </div>
+  </div>
+<main>
+  <!-- logic.js file -->
+  <script type="text/javascript"src="assets/js/logic.js"></script>
+  </body>
+</html>

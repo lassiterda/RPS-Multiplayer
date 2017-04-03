@@ -1,0 +1,101 @@
+body, #selection-row {
+  text-align: center;
+  color: #eee;
+  background-color: #222;
+}
+
+.modal-content {
+  border-radius: 2px;
+  color: #111;
+  margin-top: 68px;
+}
+.modal-content .btn {
+  color: #eee;
+}
+
+.jumbotron {
+  position: relative;
+  color: #111;
+  border-radius: 0px;
+  box-shadow: 0px -1px 4px #111 inset;
+}
+.container {
+  position: relative;
+}
+
+#player1-panel, #player2-panel {
+    border-radius: 2px;
+    box-shadow: 0px 0px 4px #111;
+    transition: 150ms ease-in-out;
+    min-height: 200px;
+}
+
+#player1-panel  {
+  border-color: #1976D2;
+}
+
+#player2-panel {
+  border-color: #D32F2F;
+}
+
+#player1-panel .panel-heading, #player2-panel .panel-heading{
+  background-image: none;
+  border-radius: 0px;
+  color: #eee;
+}
+
+#player1-panel .panel-heading, #player1-select {
+  background-color: #1976D2;
+}
+
+#player2-panel .panel-heading, #player2-select{
+  background-color: #D32F2F;
+}
+
+
+#selection-area {
+  display: inline-block;
+  margin: 10px auto;
+  padding: 0;
+}
+
+#selection-area img, #selection-area button  {
+  height: 60px;
+  width: 60px;
+  border-radius: 2px;
+  margin: 0px 5px;
+  transition: 50ms ease-in-out;
+}
+
+#selection-area img {
+  filter: invert(87%);
+  transition: 50ms ease-in-out;
+}
+
+.selected {
+  box-shadow: 3px 4px 4px #111;
+}
+
+
+
+#vs {
+  background-color: green;
+}
+
+@media only screen and (max-width: 960px) {
+  .jumbotron {
+    padding-bottom: 80px;
+  }
+  #vs {
+    position: absolute;
+    bottom: 0px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #selection-row {
+    width: 100%;
+    position: fixed;
+    bottom: 10px;
+  }
+}
