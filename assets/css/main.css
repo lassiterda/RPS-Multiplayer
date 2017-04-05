@@ -29,6 +29,9 @@ body, #selection-row {
     transition: 150ms ease-in-out;
     min-height: 200px;
 }
+#one-panel img , #two-panel img {
+  margin: 0 auto;
+}
 
 #one-panel  {
   border-color: #1976D2;
@@ -76,11 +79,6 @@ body, #selection-row {
   box-shadow: 3px 4px 4px #111;
 }
 
-
-
-#vs {
-  background-color: green;
-}
 
 @media only screen and (max-width: 960px) {
   .jumbotron {

@@ -17,21 +17,55 @@ var userRef = userListRef.push({player: "unknown"});
 
 //Game State Variables
 var thisUser = userRef.key;
-var one;
-var two;
+var player1Key;
+var player2Key;
+var player1Name;
+var player2Name;
+
 //DOM variables
 var btnShoot = $("#button-shoot");
 var btnPlayer = $(".player-btn");
 var btnSelect = $(".selection-button");
   // sync the game State with firebase
   gameStateRef.on("value", function(snap) {
-    $("#one-panel h3").text(snap.val().one.name)
-    $("#one-wins").text(snap.val().one.wins);
-    $("#one-losses").text(snap.val().one.losses);
+    var gameState = snap.val();
+          player1Name = gameState.one.name
+          player2Name = gameState.one.name
+        player1Choice = gameState.one.selection
+        player2Choice = gameState.two.selection
+           player1Key = gameState.one.userKey
+           player2Key = gameState.two.userKey
 
-    $("#two-panel h3").text(snap.val().two.name)
-    $("#two-wins").text(snap.val().two.wins);
-    $("#two-losses").text(snap.val().two.losses);
+    $("#one-panel h3").text(gameState.one.name)
+    $("#one-wins").text(gameState.one.wins);
+    $("#one-losses").text(gameState.one.losses);
+
+    $("#two-panel h3").text(gameState.two.name)
+    $("#two-wins").text(gameState.two.wins);
+    $("#two-losses").text(gameState.two.losses);
+
+    if (gameState.one.selection != "none") {
+      $("#one-content").html("<p>Ready!</p>")
+    }
+    else {
+      $("#one-content").html("<p>Thinking...</p>")
+    };
+
+    if (gameState.two.selection != "none") {
+      $("#two-content").html("<p>Ready!</p>");
+    }
+    else {
+      $("#two-content").html("<p>Thinking...</p>");
+    };
+
+    if (gameState.one.selection != "none" && gameState.two.selection != "none" ){
+
+
+      startCountdown(dispWinnerAndReset, getWinner(gameState.one, gameState.two))
+      gameStateRef.child("one").update({selection: "none"});
+      gameStateRef.child("two").update({selection: "none"});
+      // call dispWinner on getWinner(gameState.one, gameState.two);
+    };
   });
 
   //creates/disconnects users when they load/close the page
@@ -40,36 +74,34 @@ var btnSelect = $(".selection-button");
       userRef.onDisconnect().remove()
     }
     userRef.set({present: true})
-
   });
 
   //Controls the Player selection Modal, displaying different options depending on the number of users/active players
   database.ref().once("value", function(snap) {
-  var gameState = snap.val().GAME_STATE;
-  var activeUsers = Object.keys(snap.val().USERS_ONLINE)
-
-  //If no other player has made a selection... (checks to see if an Online user is listed as Player one or two)
-  if (activeUsers.indexOf(gameState.one.userKey) === -1 &&
-      activeUsers.indexOf(gameState.two.userKey) === -1) {
-       $("#modal").modal('show');
-       $("#selection-area").removeClass("hidden");
-  }
-  //If player one hasn't beed picked
-  else if (activeUsers.indexOf(gameState.one.userKey) != -1) {
-
-       $(".modal-body div").removeClass("btn-group");
-       $(".player-btn[data-player='one']").addClass("hidden");
-       $("#modal").modal('show');
-       $("#selection-area").removeClass("hidden")
-  }
-  //If player two  hasn't beed picked
-  else if (activeUsers.indexOf(gameState.two.userKey) != -1) {
-       $(".modal-body div").removeClass("btn-group");
-       $(".player-btn[data-player='two']").addClass("hidden");
-       $("#modal").modal('show');
-       $("#selection-area").removeClass("hidden")
-  }
-});
+    var gameState = snap.val().GAME_STATE;
+    var activeUsers = Object.keys(snap.val().USERS_ONLINE)
+    //If no other player has made a selection... (checks to see if an Online user is listed as Player one or two)
+    if (activeUsers.indexOf(gameState.one.userKey) === -1 &&
+        activeUsers.indexOf(gameState.two.userKey) === -1) {
+         $("#modal").modal('show');
+    }
+    else if (activeUsers.indexOf(gameState.one.userKey) === -1) {
+          console.log("b");
+         $(".modal-body div").removeClass("btn-group");
+         $(".player-btn[data-player='two']").addClass("hidden");
+         $("#modal").modal('show');
+    }
+    else if (activeUsers.indexOf(gameState.two.userKey) === -1) {
+      console.log("c");
+         $(".modal-body div").removeClass("btn-group");
+         $(".player-btn[data-player='one']").addClass("hidden");
+         $("#modal").modal('show');
+         $("#selection-area").removeClass("hidden");
+    }
+    else {
+      console.log("d")
+    }
+  });
 
 //Click handler functions for DOM elements
   //Click handler for the player selection buttons
@@ -82,6 +114,7 @@ var btnSelect = $(".selection-button");
       btnShoot.attr("data-player", player)
       $("#player-name").empty();
       $("#modal").modal("hide");
+      $("#selection-area").removeClass("hidden")
     }
   });
   //Click handler which controls the DOM manipulation for the RPS selection buttons
@@ -121,12 +154,11 @@ var btnSelect = $(".selection-button");
     //grab the selected choice (RPS) as a jQuery Object
     var btnSelected = $(".selection-button img[data-selected='true']");
 
-    //grab user selection string (Rock, Paper, or Scissors)
+    //grab user selection string (rock, paper, or scissors)
     var selection = btnSelected.attr("alt");
     var player = $(this).attr("data-player")
     //Update the User's selection in fb
     gameStateRef.child(player).update({selection: selection})
-    console.log(player);
     $("#" +player + "-content").html("<p>Ready!</p>")
 
     btnSelected.attr("data-selected", "false");
@@ -137,4 +169,79 @@ var btnSelect = $(".selection-button");
     btnShoot.addClass("disabled")
   });
 
-//Updates Firebase user record to set wins and losses (when the client disconnects they should go offline), as well as storing each player in the GAME_STATE Node under their player ID
+//function to return the winning 'player' object (one or two), once both Players have selected.
+  function getWinner(player1, player2) {
+
+    if (player1.selection == player2.selection) {
+      return "tied"
+    }
+    else {
+    //rock-check
+      if (player1.selection.toLowerCase() === "rock") {
+        if (player2.selection.toLowerCase() === "paper") { return "two"; }
+        else { return "one" }
+      };
+
+      if (player1.selection.toLowerCase() === "paper") {
+        if (player2.selection.toLowerCase() === "rock") { return "two"; }
+        else { return "one" }
+      };
+
+      if (player1.selection.toLowerCase() === "scissors") {
+        if (player2.selection.toLowerCase() === "rock") { return "two"; }
+        else { return "one" }
+      };
+    }
+  };
+
+  function startCountdown(callback, input) {
+    var time = 3;
+    $("#countdown").text(time);
+     countdown = setInterval(function() {
+      time--;
+      $("#countdown").text(time);
+      if (time === 0) {
+        //Stops the timer
+        callback(input);
+        $("#countdown").empty();
+        clearInterval(countdown)
+
+      };
+    }, 1000)
+
+  };
+
+  function dispWinnerAndReset(str) {
+          $("#one-content").html("<img class='img img-responsive' src='assets/images/" + player1Choice.toLowerCase() + ".jpeg' />");
+          $("#two-content").html("<img class='img img-responsive' src='assets/images/" + player1Choice.toLowerCase() + ".jpeg' />");
+          if (str === "tied") {
+            $("#msg-area").text("There was a tie")
+          }
+          else if (str === "one") {
+
+            $("#msg-area").text(player1Name + " won")
+
+            gameStateRef.child("one").child("wins").transaction(function (current_value) {
+              return (current_value || 0) + 1;
+            });
+            gameStateRef.child("two").child("losses").transaction(function (current_value) {
+              return (current_value || 0) + 1;
+            });
+          }
+          else if (str === "two"){
+
+            $("#msg-area").text(player1Name + " won")
+
+              gameStateRef.child("two").child("wins").transaction(function (current_value) {
+                return (current_value || 0) + 1;
+              });
+              gameStateRef.child("one").child("losses").transaction(function (current_value) {
+                return (current_value || 0) + 1;
+              });
+
+          }
+          setTimeout(function() {
+            $("#msg-area").empty()
+          }, 2000)
+        return true;  // reset gameStateRef.one.choice and gameStateRef.two.choice
+};

@@ -58,10 +58,10 @@
       <div class="col-xs-6 col-md-3 col-md-offset-2">
           <div class="panel panel-default" id="one-panel">
             <div class="panel-heading">
-              <h3 class="panel-title">Player 1</h3>
+              <h3 class="panel-title" id="one-name">Player 1</h3>
             </div>
             <div class="panel-body" id="one-content">
-              Thinking...
+              <p>Thinking...</p>
             </div>
           </div>
           <p>Wins <span class="badge" id="one-wins" >x</span></p>
@@ -70,17 +70,19 @@
 
       <!-- utility Div for countdown and results message -->
       <div class="col-md-2 col-sm-12 col-xs-12" id="vs">
+        <p id="countdown"></p>
         <h2>VS</h2>
+        <p id="msg-area"></p>
       </div>
 
         <!-- Player 2 panel -->
       <div class=" col-xs-6 col-md-3">
           <div class="panel panel-default" id="two-panel">
             <div class="panel-heading">
-              <h3 class="panel-title">Player 2</h3>
+              <h3 class="panel-title" id="two-name">Player 2</h3>
             </div>
             <div class="panel-body" id="two-content">
-              Thinking...
+              <p>Thinking...</p>
             </div>
           </div>
             <p>Wins <span class="badge" id="two-wins">x</span></p>
@@ -91,9 +93,9 @@
   <div class="container">
     <div class="row" id="selection-row">
       <div id="selection-area" class="hidden">
-        <a href="#" class="selection-button"><img class="img" src="assets/images/rock.jpeg" alt="Rock" data-selected="false" /></a>
-        <a href="#" class="selection-button"><img class="img" src="assets/images/paper.jpeg" alt="Paper" data-selected="false" /></a>
-        <a href="#" class="selection-button"><img class="img" src="assets/images/scissors.jpeg" alt=" Scissors" data-selected="false"/></a>
+        <a href="#" class="selection-button"><img class="img" src="assets/images/rock.jpeg" alt="rock" data-selected="false" /></a>
+        <a href="#" class="selection-button"><img class="img" src="assets/images/paper.jpeg" alt="paper" data-selected="false" /></a>
+        <a href="#" class="selection-button"><img class="img" src="assets/images/scissors.jpeg" alt="scissors" data-selected="false"/></a>
         <button type="button" name="Shoot!" class="btn btn-success disabled" id="button-shoot" data-player="">Shoot</button>
 
       </div>
